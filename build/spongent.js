@@ -126,7 +126,6 @@
 		}
 		
 		for(i = 0; i < nSBox; i++) value[i] = tmp[i];
-		// self.__val = tmp;
 	}
 	
 	function permute(self) {
@@ -154,8 +153,6 @@
 		}
 		
 		for(i = 0; i < nRounds; i++){
-			// console.log("Perm1 " + i + "\t" + value.map(function(i){ return i.toString(16) }));
-			
 			/* Add counter values */
 			value[0] ^= IV & 0xFF;
 			value[1] ^= (IV >> 8) & 0xFF;
@@ -164,18 +161,13 @@
 			value[nSBox-2] ^= INV_IV & 0xFF;
 			IV	= lCounter(version, IV);
 			
-			// console.log("Perm2 " + i + "\t" + value.map(function(i){ return i.toString(16) }));
 			/* Sbox8 layer */
 			for (j = 0; j < nSBox; j++) {
 				value[j] = Sbox8[value[j]];
 			}
 			
-			// self.__val = value;
-			
 			/* pLayer */
 			pLayer(self);
-			
-			// value = self.__val;
 		}
 		self.__val = value;
 	}

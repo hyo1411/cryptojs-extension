@@ -12,10 +12,10 @@
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script type="text/javascript" src="javascripts/cryptojs-aes_0.2.0.min.js"></script>
-    <script type="text/javascript" src="javascripts/cryptojs-mode-ctr_0.2.0.min.js"></script>
-    <script type="text/javascript" src="javascripts/all_0.2.0.min.js"></script>
-    <script type="text/javascript" src="javascripts/main.js"></script>
+    <script type="text/javascript" src="lib/cryptojs-aes.min.js"></script>
+    <script type="text/javascript" src="lib/cryptojs-mode-ctr.min.js"></script>
+    <script type="text/javascript" src="build/all.js"></script>
+    <script type="text/javascript" src="main.js"></script>
     <title>CryptoJS extension by artjomb</title>
   </head>
 
@@ -44,10 +44,10 @@
 
 <div class="input-block">
   <div>
-    <label for="cmac-msg">Message:</label> <input id="cmac-msg-type" type="checkbox" name="cmac-msg-type"><label for="cmac-msg-type">Hex encoded <sup>2</sup></label>
+    <label for="cmac-msg">Message:</label> <input id="cmac-msg-type" type="checkbox" name="cmac-msg-type" checked="checked"><label for="cmac-msg-type">Hex encoded <sup>2</sup></label>
   </div>
   <div>
-    <textarea id="cmac-msg" class="message" type="text" name="cmac-msg"></textarea>
+    <textarea id="cmac-msg" class="message" type="text" name="cmac-msg" >0104FFFFFFFFFFFF</textarea>
   </div>
 </div>
 
@@ -56,7 +56,7 @@
     <label for="cmac-key">Key <sup>1</sup>:</label> <input id="cmac-key-type" type="checkbox" name="cmac-key-type" checked="checked"><label for="cmac-key-type">Hex encoded <sup>2</sup></label>
   </div>
   <div>
-    <input id="cmac-key" class="max256bit" type="text" name="cmac-key">
+    <input id="cmac-key" class="max256bit" type="text" name="cmac-key" value="AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"> 
   </div>
 </div>
 

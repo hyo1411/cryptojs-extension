@@ -9,7 +9,7 @@
     var WordArray = C.lib.WordArray;
     var AES = C.algo.AES;
     var ext = C.ext;
-    var OneZeroPadding = C.pad.OneZeroPadding;
+    var OneZeroPadding = C.pad.OneZeroPaddingCustom;
     
     function aesBlock(key, data){
         var aes128 = AES.createEncryptor(key, { iv: WordArray.create(), padding: C.pad.NoPadding });
@@ -89,17 +89,20 @@
         },
         
         finalize: function (messageUpdate) {
+            var bsize = this._const_Bsize;
+            OneZeroPadding.pad(messageUpdate, bsize/4);
+           
             this.update(messageUpdate);
             
             // Shortcuts
             var buffer = this._buffer;
-            var bsize = this._const_Bsize;
+        
             
             var M_last = buffer.clone();
             if (buffer.sigBytes === bsize) {
-                ext.xor(M_last, this._K1);
-            } else {
-                OneZeroPadding.pad(M_last, bsize/4);
+            //     ext.xor(M_last, this._K1);
+            // } else {
+            //     OneZeroPadding.pad(M_last, bsize/4);
                 ext.xor(M_last, this._K2);
             }
             

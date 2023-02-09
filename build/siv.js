@@ -172,6 +172,41 @@
      * up the block. This implementation doesn't work on bits directly, 
      * but on bytes. Therefore the granularity is much bigger.
      */
+    C.pad.OneZeroPaddingCustom = {
+        pad: function (data, blocksize) {
+            // Shortcut
+            var blockSizeBytes = blocksize * 4;
+
+            // Count padding bytes
+            var nPaddingBytes = blockSizeBytes - data.sigBytes % blockSizeBytes;
+            
+            if (data.sigBytes < 16) {
+                nPaddingBytes = nPaddingBytes + 16;
+            }
+            // Create padding
+            var paddingWords = [];
+            for (var i = 0; i < nPaddingBytes; i += 4) {
+                var paddingWord = 0x00000000;
+                if (i === 0) {
+                    paddingWord = 0x80000000;
+                }
+                paddingWords.push(paddingWord);
+            }
+            var padding = WordArray.create(paddingWords, nPaddingBytes);
+
+            // Add padding
+            data.concat(padding);
+        },
+        unpad: function () {
+            // TODO: implement
+        }
+    };
+
+    /**
+     * This padding is a 1 bit followed by as many 0 bits as needed to fill 
+     * up the block. This implementation doesn't work on bits directly, 
+     * but on bytes. Therefore the granularity is much bigger.
+     */
     C.pad.OneZeroPadding = {
         pad: function (data, blocksize) {
             // Shortcut
@@ -385,7 +420,7 @@
     var WordArray = C.lib.WordArray;
     var AES = C.algo.AES;
     var ext = C.ext;
-    var OneZeroPadding = C.pad.OneZeroPadding;
+    var OneZeroPadding = C.pad.OneZeroPaddingCustom;
     
     function aesBlock(key, data){
         var aes128 = AES.createEncryptor(key, { iv: WordArray.create(), padding: C.pad.NoPadding });
@@ -465,17 +500,20 @@
         },
         
         finalize: function (messageUpdate) {
+            var bsize = this._const_Bsize;
+            OneZeroPadding.pad(messageUpdate, bsize/4);
+           
             this.update(messageUpdate);
             
             // Shortcuts
             var buffer = this._buffer;
-            var bsize = this._const_Bsize;
+        
             
             var M_last = buffer.clone();
             if (buffer.sigBytes === bsize) {
-                ext.xor(M_last, this._K1);
-            } else {
-                OneZeroPadding.pad(M_last, bsize/4);
+            //     ext.xor(M_last, this._K1);
+            // } else {
+            //     OneZeroPadding.pad(M_last, bsize/4);
                 ext.xor(M_last, this._K2);
             }
             

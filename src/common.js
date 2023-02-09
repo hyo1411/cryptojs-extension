@@ -41,6 +41,41 @@
      * up the block. This implementation doesn't work on bits directly, 
      * but on bytes. Therefore the granularity is much bigger.
      */
+    C.pad.OneZeroPaddingCustom = {
+        pad: function (data, blocksize) {
+            // Shortcut
+            var blockSizeBytes = blocksize * 4;
+
+            // Count padding bytes
+            var nPaddingBytes = blockSizeBytes - data.sigBytes % blockSizeBytes;
+            
+            if (data.sigBytes < 16) {
+                nPaddingBytes = nPaddingBytes + 16;
+            }
+            // Create padding
+            var paddingWords = [];
+            for (var i = 0; i < nPaddingBytes; i += 4) {
+                var paddingWord = 0x00000000;
+                if (i === 0) {
+                    paddingWord = 0x80000000;
+                }
+                paddingWords.push(paddingWord);
+            }
+            var padding = WordArray.create(paddingWords, nPaddingBytes);
+
+            // Add padding
+            data.concat(padding);
+        },
+        unpad: function () {
+            // TODO: implement
+        }
+    };
+
+    /**
+     * This padding is a 1 bit followed by as many 0 bits as needed to fill 
+     * up the block. This implementation doesn't work on bits directly, 
+     * but on bytes. Therefore the granularity is much bigger.
+     */
     C.pad.OneZeroPadding = {
         pad: function (data, blocksize) {
             // Shortcut
