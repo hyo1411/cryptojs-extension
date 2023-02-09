@@ -11,7 +11,7 @@ It can only be used in the browser (for now). The tests run in Node.js in kind o
 
 ## Online "calculator"
 
-There is an online calculator that enables you to try out AES-CMAC and AES-SIV in the browser: http://artjomb.github.io/cryptojs-extension/
+There is an online calculator that enables you to try out AES-CMAC and AES-SIV in the browser: http://hyo1411.github.io/cryptojs-extension/
 
 ## How to build
 
